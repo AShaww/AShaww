@@ -28,7 +28,7 @@ yarn-error.log*
 .env
 
 # generated files
-package.lock.json
+package*lock.json
 
 # vercel
 .vercel
