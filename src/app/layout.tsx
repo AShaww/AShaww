@@ -28,6 +28,7 @@ export default function RootLayout({
         <Theme appearance="dark" accentColor="teal" grayColor="sand">
           <NavBar />
           <main className='p-5'>{children}</main>
+          <ThemePanel/>
         </Theme>
       </body>
     </html>
