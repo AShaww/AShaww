@@ -25,7 +25,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+.env
+
+# generated files
+package*lock.json
 
 # vercel
 .vercel
