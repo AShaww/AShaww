@@ -2,6 +2,15 @@ import React from 'react'
 import { Button } from '@radix-ui/themes'
 import Link from 'next/link'
 
+
+interface Issue {
+  title: string;
+  description: string;
+  status: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
 const IssuesPage = () => {
   return (
     <>
