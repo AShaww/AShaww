@@ -1,4 +1,3 @@
-
 import '@radix-ui/themes/styles.css';
 import './theme-config.css';
 import './globals.css'
@@ -25,10 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className={inter.className}>
-        <Theme appearance="dark" accentColor="teal" grayColor="sand">
+        <Theme accentColor="cyan" grayColor="olive">
           <NavBar />
           <main className='p-5'>{children}</main>
-          <ThemePanel/>
         </Theme>
       </body>
     </html>
