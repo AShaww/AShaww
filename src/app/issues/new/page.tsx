@@ -45,21 +45,17 @@ const NewIssuePage = () => {
         <TextField.Root>
           <TextField.Input size='3' placeholder='Title' {...register('title')}/>
         </TextField.Root>
-        { errors.title && (
         <ErrorMessage>
-          {errors.title.message}
+          {errors.title?.message}
         </ErrorMessage>
-        )}
         <Controller
           name='description'
           control={control}
           render={({ field }) => <SimpleMDE placeholder='Description' {...field}/>}
         />
-        { errors.description && (
         <ErrorMessage>
-          {errors.description.message}
+          {errors.description?.message}
         </ErrorMessage>
-        )}
         <Button>Submit new issue</Button>
       </form>
     </div>
