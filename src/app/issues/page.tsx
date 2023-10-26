@@ -4,12 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { Button, Table, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import axios from 'axios';
+import IssueStatusBadge, { IssueBadge } from '../components/IssuesStatusBadge';
 
 interface Issue {
   id: number;
   title: string;
   description: string;
-  status: string;
+  status: IssueBadge;
   created_at: Date;
   updated_at: Date;
 }
@@ -54,7 +55,9 @@ const IssuesPage = () => {
             <Table.Row key={issue.id}>
               <Table.Cell>
                 {issue.title}
-                <div className='block md:hidden'>{issue.status}</div>
+                <div className='block md:hidden'>
+                  <IssueStatusBadge status={issue.status} />
+                </div>
               </Table.Cell>
               <Table.Cell className='hidden md:table-cell'>{issue.status}</Table.Cell>
               <Table.Cell className='hidden md:table-cell'>{new Date(issue.created_at).toDateString()}</Table.Cell>
