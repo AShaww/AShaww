@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { Button, Text } from '@radix-ui/themes';
+import { Button, Table, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import axios from 'axios';
 
 interface Issue {
+  id: number;
   title: string;
   description: string;
   status: string;
@@ -34,33 +35,33 @@ const IssuesPage = () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <Text className="text-2xl font-bold">
-          Issues
-        </Text>
+    <div>
+      <div className='mb-5'>
         <Button>
-          <Link href='/issues/new'>New Issue</Link>
+          <Link href="/issues/new">New Issue</Link>
         </Button>
       </div>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
-        {issues.map((issue, index) => (
-          <div key={index} className="bg-white p-4 rounded shadow hover:shadow-md w-96">
-            <h2 className="text-lg font-bold mb-4">{issue.title}</h2>
-            <p className="text-gray-600 mt-2">{issue.description}</p>
-            <p className="text-sm mt-2">
-              Status: <span className="text-green-500">{issue.status}</span>
-            </p>
-            <div className='flex space-x-11 mt-4'>
-              <p className='text-xs'>
-                Created: {new Date(issue.created_at).toDateString()}
-              </p><p className='text-xs'>
-                Updated: {new Date(issue.updated_at).toDateString()}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+      <Table.Root variant='surface'>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className='hidden md:table-cell'>Status</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className='hidden md:table-cell'>Created</Table.ColumnHeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {issues.map(issue => (
+            <Table.Row key={issue.id}>
+              <Table.Cell>
+                {issue.title}
+                <div className='block md:hidden'>{issue.status}</div>
+              </Table.Cell>
+              <Table.Cell className='hidden md:table-cell'>{issue.status}</Table.Cell>
+              <Table.Cell className='hidden md:table-cell'>{new Date(issue.created_at).toDateString()}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table.Root>
     </div>
   );
 };
