@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import SimpleMDE from "react-simplemde-editor";
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import "easymde/dist/easymde.min.css";
 import { useRouter } from 'next/navigation';
@@ -22,8 +22,9 @@ const NewIssuePage = () => {
     resolver: zodResolver(createIssueSchema)
   });
   const [error, setError] = useState('');
-  const [isSubmitting, setSubmitting ]=useState(false)
-  const onSubmit: SubmitHandler<IssueForm> = async (data) => {
+  const [isSubmitting, setSubmitting ] = useState(false)
+
+  const onSubmit = handleSubmit(async (data) => {
     try {
       createIssueSchema.parse(data);
       setSubmitting(true)
@@ -33,10 +34,10 @@ const NewIssuePage = () => {
       setSubmitting(false)
       setError('An unexpected error occured.');
     }
-  };
+  });
 
   return (
-    <div className='max-w-xl '>
+    <div className='max-w-xl'>
       { error && 
         <Callout.Root color='red' className='mb-5'>
           <Callout.Text>{error}</Callout.Text>
@@ -44,7 +45,7 @@ const NewIssuePage = () => {
       }
       <form 
         className='space-y-3' 
-        onSubmit={handleSubmit(onSubmit)}>
+        onSubmit={onSubmit}>
         <TextField.Root>
           <TextField.Input size='3' placeholder='Title' {...register('title')}/>
         </TextField.Root>
