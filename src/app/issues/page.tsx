@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Table } from '@radix-ui/themes';
-import Link from 'next/link';
+import Link from '../components/Link';
 import axios from 'axios'; // Import Axios
 import LoadingSkeleton from 'react-loading-skeleton'; // Import Loading Skeleton
 import IssueStatusBadge, { IssueBadge } from '../components/IssuesStatusBadge';

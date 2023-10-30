@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import IssueStatusBadge, { IssueBadge } from '@/app/components/IssuesStatusBadge';
 import { Card, Flex, Heading, Text } from '@radix-ui/themes';
+import ReactMarkdown from 'react-markdown';
 
 interface Issue {
     id: number;
@@ -54,8 +55,8 @@ const IssueDetailPage = ({ params }: Props) => {
           <IssueStatusBadge status={issue.status} />
           <Text>{new Date(issue.created_at).toDateString()}</Text>
         </Flex>
-        <Card>
-          <p>{issue.description}</p>
+        <Card className='prose' mt="4">
+            <ReactMarkdown>{issue.description}</ReactMarkdown>
         </Card>
       </div>
       ) : null}
