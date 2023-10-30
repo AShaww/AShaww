@@ -2,17 +2,22 @@
 
 import React, { useState } from 'react'
 import { Button, Callout, Text, TextField } from '@radix-ui/themes';
-import SimpleMDE from "react-simplemde-editor";
+import dynamic from 'next/dynamic';
+
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
-import "easymde/dist/easymde.min.css";
+import 'easymde/dist/easymde.min.css';
 import { useRouter } from 'next/navigation';
 import { createIssueSchema } from '../../createIssueSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod'
+
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
 
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+  ssr: false,
+});
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -55,7 +60,14 @@ const NewIssuePage = () => {
         <Controller
           name='description'
           control={control}
-          render={({ field }) => <SimpleMDE placeholder='Description' {...field}/>}
+          render={({ field }) => (
+            <SimpleMDE
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              placeholder='Description'
+            />
+          )}
         />
         <ErrorMessage>
           {errors.description?.message}
