@@ -5,6 +5,7 @@ import Link from 'next/link';
 import axios from 'axios'; // Import Axios
 import LoadingSkeleton from 'react-loading-skeleton'; // Import Loading Skeleton
 import IssueStatusBadge, { IssueBadge } from '../components/IssuesStatusBadge';
+import IssueActions from './IssueActions';
 
 interface Issue {
   id: number;
@@ -37,6 +38,7 @@ const IssuesPage = () => {
 
   return (
     <div>
+      <IssueActions />
       <Table.Root variant='surface'>
         <Table.Header>
           <Table.Row>
