@@ -3,11 +3,10 @@
 import { notFound } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import IssueStatusBadge from '@/app/components/IssueStatusBadge';
 import { Issue } from '@/app/types/express';
-import { Box, Button, Card, Flex, Grid, Heading, Link, Text } from '@radix-ui/themes';
-import ReactMarkdown from 'react-markdown';
-import { Pencil2Icon } from '@radix-ui/react-icons';
+import { Box, Grid } from '@radix-ui/themes';
+import EditIssueButton from './EditIssueButton';
+import IssueDetails from './IssueDetails';
   
 interface Props {
   params: { id: string };
@@ -42,22 +41,12 @@ const IssueDetailPage = ({ params }: Props) => {
       {loading ? (
         <p>Loading...</p>
       ) : issue ? (
-      <Grid columns={{ initial: "1", md: "2" }} gap="5">
+        <Grid columns={{ initial: "1", md: "2" }} gap="5">
         <Box>
-          <Heading>{issue.title}</Heading>
-          <Flex className="space-x-3" my="2">
-            <IssueStatusBadge status={issue.status} />
-            <Text>{new Date(issue.created_at).toDateString()}</Text>
-          </Flex>
-          <Card className="prose" mt="4">
-            <ReactMarkdown>{issue.description}</ReactMarkdown>
-          </Card>
+          <IssueDetails issue={issue} />
         </Box>
         <Box>
-          <Button>
-            <Pencil2Icon />
-            <Link className='text-white' href={`/issues/${issue.id}/edit`}>Edit Issue</Link>
-          </Button>
+         <EditIssueButton issueId={issue.id} />
         </Box>
       </Grid>
       ) : null}
