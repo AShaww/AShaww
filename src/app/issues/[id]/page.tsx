@@ -3,7 +3,8 @@
 import { notFound } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IssueBadge } from '@/app/components/IssuesStatusBadge';
+import IssueStatusBadge, { IssueBadge } from '@/app/components/IssuesStatusBadge';
+import { Card, Flex, Heading, Text } from '@radix-ui/themes';
 
 interface Issue {
     id: number;
@@ -39,7 +40,6 @@ const IssueDetailPage = ({ params }: Props) => {
         notFound();
       }
     };
-
     fetchIssue();
   }, [params.id]);
 
@@ -48,12 +48,16 @@ const IssueDetailPage = ({ params }: Props) => {
       {loading ? (
         <p>Loading...</p>
       ) : issue ? (
-        <>
-          <p>{issue.title}</p>
+        <div>
+        <Heading>{issue.title}</Heading>
+        <Flex className="space-x-3" my="2">
+          <IssueStatusBadge status={issue.status} />
+          <Text>{new Date(issue.created_at).toDateString()}</Text>
+        </Flex>
+        <Card>
           <p>{issue.description}</p>
-          <p>{issue.status}</p>
-          <p>{new Date(issue.created_at).toDateString()}</p>
-        </>
+        </Card>
+      </div>
       ) : null}
     </div>
   );
