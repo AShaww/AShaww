@@ -3,12 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Table } from '@radix-ui/themes';
 import { IssueStatusBadge, Link } from '@/app/components';
 import axios from 'axios';
-import LoadingSkeleton from 'react-loading-skeleton';
-
-import IssueActions from './IssueActions';
-import { IssueBadge } from '../components/IssueStatusBadge';
 import { Issue } from '../types/express';
-
+import LoadingSkeleton from 'react-loading-skeleton';
+import IssueActions from './IssueActions';
 
 const IssuesPage = () => {
   const [issues, setIssues] = useState<Issue[]>([]);
