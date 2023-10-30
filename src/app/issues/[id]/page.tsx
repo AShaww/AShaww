@@ -3,18 +3,11 @@
 import { notFound } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import IssueStatusBadge, { IssueBadge } from '@/app/components/IssueStatusBadge';
+import IssueStatusBadge from '@/app/components/IssueStatusBadge';
+import { Issue } from '@/app/types/express';
 import { Card, Flex, Heading, Text } from '@radix-ui/themes';
 import ReactMarkdown from 'react-markdown';
 
-interface Issue {
-    id: number;
-    title: string;
-    description: string;
-    status: IssueBadge;
-    created_at: Date;
-    updated_at: Date;
-  }
   
 interface Props {
   params: { id: string };
