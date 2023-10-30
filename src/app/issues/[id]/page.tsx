@@ -3,7 +3,7 @@
 import { notFound } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import IssueStatusBadge, { IssueBadge } from '@/app/components/IssuesStatusBadge';
+import IssueStatusBadge, { IssueBadge } from '@/app/components/IssueStatusBadge';
 import { Card, Flex, Heading, Text } from '@radix-ui/themes';
 import ReactMarkdown from 'react-markdown';
 

@@ -1,11 +1,12 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Table } from '@radix-ui/themes';
-import Link from '../components/Link';
-import axios from 'axios'; // Import Axios
-import LoadingSkeleton from 'react-loading-skeleton'; // Import Loading Skeleton
-import IssueStatusBadge, { IssueBadge } from '../components/IssuesStatusBadge';
+import { IssueStatusBadge, Link } from '@/app/components';
+import axios from 'axios';
+import LoadingSkeleton from 'react-loading-skeleton';
+
 import IssueActions from './IssueActions';
+import { IssueBadge } from '../components/IssueStatusBadge';
 
 interface Issue {
   id: number;
