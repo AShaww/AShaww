@@ -29,7 +29,6 @@ const currentPath = usePathname();
               href={link.href}>{link.label}</Link> )}
         </ul>
     </nav>
-
   )
 }
 

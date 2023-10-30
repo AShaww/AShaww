@@ -1,9 +1,9 @@
 'use client'
-
-import React, { useEffect, useState } from 'react';
-import { Button, Table, Text } from '@radix-ui/themes';
+import React, { useState, useEffect } from 'react';
+import { Table } from '@radix-ui/themes';
 import Link from 'next/link';
-import axios from 'axios';
+import axios from 'axios'; // Import Axios
+import LoadingSkeleton from 'react-loading-skeleton'; // Import Loading Skeleton
 import IssueStatusBadge, { IssueBadge } from '../components/IssuesStatusBadge';
 
 interface Issue {
@@ -17,31 +17,26 @@ interface Issue {
 
 const IssuesPage = () => {
   const [issues, setIssues] = useState<Issue[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchIssues = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/issues/all`);
-        console.log(response)
-        if (response.status === 200) {
-          setIssues(response.data);
-        } else {
-          console.error('Error fetching issues:', response);
-        }
+        await new Promise(resolve => setTimeout(resolve, 300));
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/issues/`);
+        console.log(response.data)
+        setIssues(response.data as Issue[]);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching issues:', error);
       }
     };
+
     fetchIssues();
   }, []);
 
   return (
     <div>
-      <div className='mb-5'>
-        <Button>
-          <Link href="/issues/new">New Issue</Link>
-        </Button>
-      </div>
       <Table.Root variant='surface'>
         <Table.Header>
           <Table.Row>
@@ -51,18 +46,37 @@ const IssuesPage = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {issues.map(issue => (
-            <Table.Row key={issue.id}>
-              <Table.Cell>
-                {issue.title}
-                <div className='block md:hidden'>
+          {isLoading ? (
+            Array(5).fill(0).map((_, index) => (
+              <Table.Row key={index}>
+                <Table.Cell>
+                  <LoadingSkeleton width={200} height={20} />
+                </Table.Cell>
+                <Table.Cell className='hidden md:table-cell'>
+                  <LoadingSkeleton width={100} height={20} />
+                </Table.Cell>
+                <Table.Cell className='hidden md:table-cell'>
+                  <LoadingSkeleton width={120} height={20} />
+                </Table.Cell>
+              </Table.Row>
+            ))
+          ) : (
+            issues.map(issue => (
+              <Table.Row key={issue.id}>
+                <Table.Cell>
+                  <Link href={`/issues/${issue.id}`}>
+                    {issue.title}
+                  </Link>
+                </Table.Cell>
+                <Table.Cell className='hidden md:table-cell'>
                   <IssueStatusBadge status={issue.status} />
-                </div>
-              </Table.Cell>
-              <Table.Cell className='hidden md:table-cell'>{issue.status}</Table.Cell>
-              <Table.Cell className='hidden md:table-cell'>{new Date(issue.created_at).toDateString()}</Table.Cell>
-            </Table.Row>
-          ))}
+                </Table.Cell>
+                <Table.Cell className='hidden md:table-cell'>
+                {new Date(issue.created_at).toDateString()}
+                </Table.Cell>
+              </Table.Row>
+            ))
+          )}
         </Table.Body>
       </Table.Root>
     </div>
