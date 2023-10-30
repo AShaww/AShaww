@@ -5,9 +5,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import IssueStatusBadge from '@/app/components/IssueStatusBadge';
 import { Issue } from '@/app/types/express';
-import { Card, Flex, Heading, Text } from '@radix-ui/themes';
+import { Box, Button, Card, Flex, Grid, Heading, Link, Text } from '@radix-ui/themes';
 import ReactMarkdown from 'react-markdown';
-
+import { Pencil2Icon } from '@radix-ui/react-icons';
   
 interface Props {
   params: { id: string };
@@ -42,16 +42,24 @@ const IssueDetailPage = ({ params }: Props) => {
       {loading ? (
         <p>Loading...</p>
       ) : issue ? (
-        <div>
-        <Heading>{issue.title}</Heading>
-        <Flex className="space-x-3" my="2">
-          <IssueStatusBadge status={issue.status} />
-          <Text>{new Date(issue.created_at).toDateString()}</Text>
-        </Flex>
-        <Card className='prose' mt="4">
+      <Grid columns={{ initial: "1", md: "2" }} gap="5">
+        <Box>
+          <Heading>{issue.title}</Heading>
+          <Flex className="space-x-3" my="2">
+            <IssueStatusBadge status={issue.status} />
+            <Text>{new Date(issue.created_at).toDateString()}</Text>
+          </Flex>
+          <Card className="prose" mt="4">
             <ReactMarkdown>{issue.description}</ReactMarkdown>
-        </Card>
-      </div>
+          </Card>
+        </Box>
+        <Box>
+          <Button>
+            <Pencil2Icon />
+            <Link className='text-white' href={`/issues/${issue.id}/edit`}>Edit Issue</Link>
+          </Button>
+        </Box>
+      </Grid>
       ) : null}
     </div>
   );
