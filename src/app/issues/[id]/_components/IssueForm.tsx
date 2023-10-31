@@ -1,22 +1,18 @@
 'use client';
 
-import { Button, Callout, DropdownMenu, Text, TextField } from '@radix-ui/themes';
-import dynamic from 'next/dynamic';
-import { useForm, Controller } from 'react-hook-form';
+import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Callout, TextField } from '@radix-ui/themes';
 import axios from 'axios';
 import 'easymde/dist/easymde.min.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
+import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
-import ErrorMessage from '@/app/components/ErrorMessage';
-import Spinner from '@/app/components/Spinner';
-import { Issue } from '@/app/types/express';
 import { issueSchema } from '../../validationSchema';
-
-const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
-  ssr: false,
-});
+import { Issue } from '@/app/types/express';
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
@@ -39,6 +35,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       if (issue) await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/issues/${issue.id}/edit`, data);
       else await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/issues/new`, data);
       router.push('/issues');
+      router.refresh();
     } catch (error) {
       setSubmitting(false);
       setError('An unexpected error occurred.');

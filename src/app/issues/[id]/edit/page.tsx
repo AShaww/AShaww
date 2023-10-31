@@ -3,8 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { notFound } from 'next/navigation';
-import IssueForm from '../_components/IssueForm';
 import { Issue } from '@/app/types/express';
+import IssueFormSkeleton from './loading';
+import dynamic from 'next/dynamic';
+
+const IssueForm = dynamic(
+  () => import('@/app/issues/[id]/_components/IssueForm'),
+  {
+    ssr: false, 
+    loading: () => <IssueFormSkeleton />
+  }
+)
 
 interface Props {
   params: { id: string };
