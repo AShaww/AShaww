@@ -3,9 +3,9 @@ import React from 'react';
 
 export type IssueBadge = 'OPEN' | 'IN_PROGRESS' | 'CLOSED';
 
-const statusMap: Record<IssueBadge, { label: string; color: 'red' | 'violet' | 'green' }> = {
+const statusMap: Record<IssueBadge, { label: string; color: 'red' | 'yellow' | 'green' }> = {
   OPEN: { label: 'Open', color: 'red' },
-  IN_PROGRESS: { label: 'In Progress', color: 'violet' },
+  IN_PROGRESS: { label: 'In Progress', color: 'yellow' },
   CLOSED: { label: 'Closed', color: 'green' },
 };
 

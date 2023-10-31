@@ -13,7 +13,6 @@ import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
 import { createIssueSchema } from '@/app/createIssueSchema';
 import { Issue } from '@/app/types/express';
-import { CaretDownIcon } from '@radix-ui/react-icons';
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
   ssr: false,
@@ -27,7 +26,6 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     register,
     control,
     handleSubmit,
-    setValue, // Add setValue from react-hook-form
     formState: { errors },
   } = useForm<IssueFormData>({
     resolver: zodResolver(createIssueSchema),
@@ -41,7 +39,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       if (issue) {
         await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/issues/${issue.id}/edit`, data);
       } else {
-        await axios.post('/api/issues', data);
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/issues/new`, data);
       }
       router.push('/issues');
     } catch (error) {
@@ -59,16 +57,15 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       )}
       <form className="space-y-3" onSubmit={onSubmit}>
       <div className='flex justify-between'>
-              <TextField.Root>
+        <TextField.Root>
           <TextField.Input defaultValue={issue?.title} placeholder="Title" {...register('title')} />
         </TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
-        <DropdownMenu.Root>
+  {/* <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           <Button variant="solid">
             Ticket status: 
-            <CaretDownIcon />
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
@@ -77,7 +74,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
           <DropdownMenu.Separator />
           <DropdownMenu.Item shortcut="⌘ N">CLOSED</DropdownMenu.Item>
         </DropdownMenu.Content>
-      </DropdownMenu.Root>
+      </DropdownMenu.Root> */}
+
         </div>
         <Controller
           name="description"
