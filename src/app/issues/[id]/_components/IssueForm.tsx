@@ -11,14 +11,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
-import { createIssueSchema } from '@/app/createIssueSchema';
 import { Issue } from '@/app/types/express';
+import { issueSchema } from '../../validationSchema';
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
   ssr: false,
 });
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const router = useRouter();
@@ -28,7 +28,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(issueSchema),
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
@@ -36,11 +36,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
-      if (issue) {
-        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/issues/${issue.id}/edit`, data);
-      } else {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/issues/new`, data);
-      }
+      if (issue) await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/issues/${issue.id}/edit`, data);
+      else await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/issues/new`, data);
       router.push('/issues');
     } catch (error) {
       setSubmitting(false);
@@ -62,21 +59,21 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         </TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
-  {/* <DropdownMenu.Root>
-        <DropdownMenu.Trigger>
-          <Button variant="solid">
-            Ticket status: 
-          </Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          <DropdownMenu.Item shortcut="⌘ E">OPEN</DropdownMenu.Item>
-          <DropdownMenu.Item shortcut="⌘ D">IN PROGRESS</DropdownMenu.Item>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Item shortcut="⌘ N">CLOSED</DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root> */}
+    {/* <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <Button variant="solid">
+              Ticket status: 
+            </Button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Item shortcut="⌘ E">OPEN</DropdownMenu.Item>
+            <DropdownMenu.Item shortcut="⌘ D">IN PROGRESS</DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item shortcut="⌘ N">CLOSED</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root> */}
 
-        </div>
+      </div>
         <Controller
           name="description"
           control={control}
